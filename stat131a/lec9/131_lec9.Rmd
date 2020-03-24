@@ -1,0 +1,190 @@
+---
+title: "Stat131 lecture 9"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+##Practice with conditionals 
+The basic syntax for an `if/else` statement is
+
+```{r, eval=FALSE}
+if ( condition ) {
+  statement1
+} else {
+  statement2
+}
+```
+
+You can also write this on a single line as:
+```{r, eval=FALSE}
+if(condition) statement1 else statement2
+```
+
+In the exercise below you will determine whether the year 2013 is a leap year. The condition for a year to be a leap year is written in terms of the modulo operator, `%%` in R. 
+
+For example
+```{r}
+15 %% 2
+15 %% 3
+```
+
+We see that 15 modulo 2 is one because the remainder when you divide 15 by 2 is 1. Similarly when you divide 15 by 3 you don't get any remainder.
+
+
+Assign **TRUE** to the boolean variable leapYear if the integer variable year is a
+leap year and **FALSE** otherwise. The rule for determining leap years is that one of the following conditions must hold:
+1) the year is divisible by 4 but not divisible by 100, or 
+2) the year is divisible by 400.
+
+Below you will figure out if the year 2013 is a leap year.
+```{r,cond, exercise = TRUE, exercise.setup = "cond-setup", exercise.eval = FALSE, message=FALSE}
+year <- 2013
+if( __fill_in__  ) {leapyear <- __fill_in__
+}else{
+  leapyear <- __fill_in__
+}
+leapyear
+```
+
+```{r  cond-hint, echo = FALSE}
+
+# if((year%%4==0 & year%%100 != 0) | (year%% 400 ==0)  ) leapyear <- TRUE 
+# etc....
+
+```
+
+
+
+```{r cond-solution, echo = FALSE}
+year <-  2013
+if((year%%4==0 & year%%100 != 0) | (year%% 400 ==0)  ) leapyear <- TRUE  else leapyear <- FALSE
+leapyear
+```
+
+
+```{r,include=TRUE}
+
+```
+
+##Practice with loops
+
+Recall the syntax or `for` and `while` loops:
+
+```{r, eval=FALSE}
+
+for ( name in vector ){
+  statement
+}
+
+```
+
+
+```{r,eval=FALSE}
+while (condition){
+  statement
+}
+```
+
+
+Simulate rolling a die until you get a 4. Create a vector of your rolls.
+
+
+```{r,loop, exercise = TRUE, exercise.setup = "DC-2017-02-14-08371a-setup", exercise.eval = FALSE}
+myrolls <- c()
+roll <- 1000 #some number not 1 through 6
+while(roll != 4){
+  roll <- __fill_in__
+  myrolls=c(myrolls,roll)
+}
+myrolls
+```
+
+```{r  loop-hint, echo = FALSE}
+
+# sample(1;2,1) is a coin toss.Adpat this to roll a die.
+
+```
+
+
+
+```{r loop-solution, echo = FALSE}
+myrolls <- c()
+roll <- 1000 #some number not 1 through 6
+while(roll != 4){
+  roll <- sample(1:6,1)
+  myrolls=c(myrolls,roll)
+}
+myrolls
+```
+
+
+The `break` statement causes a loop to exit. You will see an example in the next question.
+
+Here is a character vector called `chars`
+
+```{r loop1-setup, echo = FALSE}
+# Pre-defined variables
+rquote <- "R's internals are irrefutably intriguing"
+chars <- strsplit(rquote, split = "")[[1]]
+```
+
+```{r, echo=FALSE}
+rquote <- "R's internals are irrefutably intriguing"
+chars <- strsplit(rquote, split = "")[[1]]
+chars
+```
+
+
+
+Count the number of "r"s (both "r" and "R") that come before the first letter "u"  (both "u" and "U") in the rquote character string. Store the result in a variable rcount.
+
+
+
+```{r loop1, exercise = TRUE,  exercise.eval = FALSE, exercise.setup = "loop1-setup"}
+
+rcount <- 0
+for (char in chars) {
+  if (char == "u" | char == "U") {
+    break
+  }
+  __fill_in__
+}
+
+# Print the resulting rcount variable to the console
+rcount
+
+
+
+
+```
+
+```{r  loop1-hint, echo = FALSE}
+# you are counting the number of "r" or "R". Use an if statement here and update rcount.
+
+```
+
+```{r loop1-solution, echo = FALSE}
+
+rcount <- 0
+for (char in chars) {
+  if (char == "u" | char == "U") {
+    break
+  }
+  if (char == "r" | char == "R") {
+    rcount <- rcount + 1
+  }
+}
+
+# Print the resulting rcount variable to the console
+rcount
+```
+
+
+
+

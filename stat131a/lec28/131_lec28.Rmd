@@ -1,0 +1,105 @@
+---
+title: "Stat131A lecture 28"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, message=FALSE,echo=TRUE}
+library(DataComputing)
+
+```
+
+##SE of the percentage simulation
+
+```{r,norm1-setup, exercise = FALSE, exercise.setup = "exper-hist2", exercise.eval = FALSE, message=FALSE}
+library(DataComputing)
+
+```
+The population of New Mexico is 1M with 50% democrats and we are taking a sample size of 10,000. We wish to know what is a more accurate assesment of the true % of democrats in NM, to randomly sample with or without replacement. To answer this question you will compute the SE of the percentage of democrats with and without replacement.
+
+To make the simulation run faster lets scale down the population of your box and sample size by a factor or 1000 (i.e. pop size is 1,000, and sample size is 10).
+
+Here is a sample of size 10 of our box drawn without replacement:
+```{r}
+pop <- 1000
+sample_size <- 10  
+a <- rep(0,each=pop/2)  #Republican 
+b <- rep(1,each=pop/2)  #Democrat
+box <- c(a,b)
+my_sample <- sample(box,size=sample_size,replace=FALSE)
+my_sample
+```
+
+Write a function called `fun` that takes no input and creates a sample of 1 and 0 from the box without replacement and outputs the percentage of 1 in your sample.
+
+```{r exper-hist1, exercise=TRUE, exercise.eval=FALSE,message=FALSE}
+pop <- 1000
+sample_size <- 10  
+a <- rep(0,each=pop/2)  #Republican
+b <- rep(1,each=pop/2)  #Democrat
+box <- c(a,b)
+
+#__fill_in__
+
+fun()
+```
+
+```{r exper-hist1-solution}
+pop <- 1000
+sample_size <- 10   
+a <- rep(0,each=pop/2)   
+b <- rep(1,each=pop/2)   
+box <- c(a,b)
+
+fun <- function(){
+  my_sample <- sample(box,size=sample_size,replace=boolean)
+  mean(my_sample)*100
+}  
+fun()
+```
+
+Next replicate `fun` to create a vector of sample percentages.  Take the SD of all of the sample percentages to find the SE of the percentage of democrats with and without replacement. Here is a template of what you need. 
+
+```{r exper-hist2, exercise=TRUE, exercise.eval=FALSE,message=FALSE}
+pop <- 1000
+sample_size <- 10  
+a <- rep(0,each=pop/2)  #Republican
+b <- rep(1,each=pop/2)  #Democrat
+box <- c(a,b)
+
+for(boolean in c(TRUE,FALSE)){
+fun <- function(){
+  my_sample <- sample(box,size=sample_size,replace=boolean)
+  __fill_in__
+}  
+B <- 1000
+vec_percentages <- replicate(B,fun())
+print(__fill_in__)
+}
+```
+
+```{r exper-hist2-solution}
+pop <- 1000
+sample_size <- 10   
+a <- rep(0,each=pop/2)   
+b <- rep(1,each=pop/2)   
+box <- c(a,b)
+for(boolean in c(TRUE,FALSE)){
+  fun <- function(){
+    my_sample <- sample(box,size=sample_size,replace=boolean)
+    mean(my_sample)*100
+  }  
+ B <- 1000
+  vec_percentages <- replicate(B,fun())
+  print(sd(vec_percentages))
+}
+
+```
+
+
+

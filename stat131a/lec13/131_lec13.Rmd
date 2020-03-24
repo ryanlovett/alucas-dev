@@ -1,0 +1,91 @@
+---
+title: "Stat131A lecture 13"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(DataComputing)
+library(mosaicData)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+##Practice with ggplot
+
+### examples
+Here is the data table mosaicData::CPS85:
+```{r}
+head(CPS85)
+```
+
+```{r, echo=TRUE}
+frame <- CPS85 %>% ggplot(aes(x=age,y=wage)) 
+frame + geom_point()
+```
+
+
+```{r, echo=TRUE}
+frame <- CPS85 %>% ggplot(aes(x=age,y=wage)) 
+frame + geom_point(aes(shape=sex))
+```
+
+
+```{r, echo=TRUE}
+frame <- CPS85 %>% ggplot(aes(x=age,y=wage)) 
+frame + geom_point(aes(shape=sex)) + facet_grid(married ~ .)
+```
+
+```{r, warning=FALSE, echo=TRUE}
+frame <- CPS85 %>% ggplot(aes(x=age,y=wage)) 
+frame + geom_point(aes(shape=married)) + ylim(0,30)
+```
+
+
+
+Here is a cheet sheet:
+(Rstudio)[https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf]
+
+It is important to be able to look up the syntax and aesetics for the different geoms. Here is a good resourse from [ggplot2.org](http://docs.ggplot2.org/current/index.html)
+
+
+### Your turn
+
+
+Please make
+
+```{r, echo=FALSE}
+
+CPS85 %>% ggplot(aes(x=age,wage)) + geom_point(aes(color=married)) + facet_wrap(~sex)
+```
+
+from the dataframe:
+```{r}
+head(CPS85)
+```
+
+
+
+```{r,cond, exercise = TRUE, exercise.setup = "cond-setup", exercise.eval = FALSE, message=FALSE}
+
+```
+
+```{r  cond-hint, echo = FALSE}
+#use CPS85 %>% ggplot(aes(x=age,wage))
+#use facet_wrap(~sex)
+
+```
+
+
+
+```{r cond-solution, echo = FALSE}
+CPS85 %>% ggplot(aes(x=age,wage)) + geom_point(aes(color=married)) + facet_wrap(~sex)
+```
+
+
+```{r,include=TRUE}
+
+```
+
+

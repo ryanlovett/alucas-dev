@@ -1,0 +1,149 @@
+---
+title: "Stat131A lecture 36"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, message=FALSE,echo=TRUE}
+library(DataComputing)
+```
+
+
+#Example of bootstrapping a 95% CI  
+
+### Data Cleaning a data set.
+Lets load some maternity data from the Kaiser database into R.
+
+```{r message=FALSE}
+
+#the function load, loads a dataset into your workspace. It outputs a vector of all dataframes in the data set. In this case there is just one data set called infants. 
+data <- load(url("https://www.stat.berkeley.edu/users/nolan/data/KaiserBabies.rda"))
+data
+
+ #We will eliminate observations if the `smoke` doesn't take the value `smoke=Never` or `smoke=Now`. 
+
+infants <- infants %>% filter(smoke=="Never" |  smoke =="Now") 
+infants <- na.omit(infants)  #remove all NA from data frame
+```
+
+
+```{r}
+head(infants)
+```
+
+This data set contains a sample of personal information about the family of babies born at Kaiser in San Francisco. We wish to get a 95% CI for the population weight of the San Francisco mothers at the time of delivery. We will use variable `wt`.
+
+
+### Step 1: Take a sample one time from your population.
+
+This was already done by Kaiser in creating the data set. The sampling method isn't important to us although we assume that it is unbiased.
+
+```{r}
+mysample <- infants$wt
+sample_size <- length(mysample)
+sample_mean <- mean(mysample)  # the mean of your original sample
+sample_size
+sample_mean
+```
+
+### Step 2: Resample from `mysample` B=1000 times with replacement (size `sample_size`). Form a vector of sample estimates of your parameter.
+
+
+```{r}
+
+B=1000
+# the function is used to find the average of each size-100 samples
+find_avg <- function(){
+  resample <- sample(mysample, size = 570, replace = T)
+  xbar <- mean(resample)
+  xbar
+}
+# we will run the above function 1000 times
+vec <- replicate(B, find_avg())
+```
+
+### Step 3: subtract your `sample_mean` from your vector of estimates
+
+
+```{r}
+vec_minus_mean <- vec - sample_mean
+```
+
+### Step 4: Find the 2.5th and 97.5th percentile of your vector
+
+```{r}
+a <- quantile(vec_minus_mean, .025)
+b <- quantile(vec_minus_mean, .975)
+a
+b
+```
+
+### Step 5: Find the 95% CI
+
+```{r}
+bootCI <- c(sample_mean-b,sample_mean-a)
+bootCI
+```
+
+
+
+###Your turn:
+
+Find a 90% CI for the median gestation period `gestation` from the  `infants` data set above.
+
+```{r,exper-his2-setup, exercise = FALSE, exercise.setup = "exper-hist", exercise.eval = FALSE, message=FALSE}
+library(dplyr)
+library(ggplot2)
+
+data <- load(url("https://www.stat.berkeley.edu/users/nolan/data/KaiserBabies.rda"))
+data
+infants <- na.omit(infants) 
+
+set.seed(7)   #The function set.seed makes it so that everyone will be using the same sample.
+
+infants <- infants %>% filter(smoke=="Never" |  smoke =="Now") 
+infants <- na.omit(infants)  #remove all NA from data frame
+
+```
+
+
+```{r exper-his2, exercise=TRUE, exercise.eval=FALSE}
+
+```
+
+
+```{r exper-his2-solution}
+
+mysample =infants$gestation
+sample_size <- length(mysample)
+sample_med <- median(mysample)  # the mean of your original sample
+sample_size
+sample_med
+
+B=1000
+# the function is used to find the average of each size-100 samples
+find_median <- function(){
+  resample <- sample(mysample, size = 570, replace = T)
+  med <- median(resample)
+  med
+}
+
+# we will run the above function 1000 times
+vec <- replicate(B, find_median())
+vec_minus_med <- vec - sample_med
+
+a <- quantile(vec_minus_med, .05)
+b <- quantile(vec_minus_med, .95)
+a
+b
+
+bootCI <- c(sample_med-b,sample_med-a)
+bootCI
+```
+
+

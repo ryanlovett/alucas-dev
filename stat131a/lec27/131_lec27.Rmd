@@ -1,0 +1,156 @@
+---
+title: "Stat131A lecture 27"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, message=FALSE,echo=TRUE}
+library(DataComputing)
+
+```
+
+##`replicate() in R`
+
+`replicate()` repeats a function over and over again.
+For example suppose you have a function that returns the phrase "I Love Stats". Replicate print this out many times. It is generally faster than using a traditional loop.
+
+```{r}
+B=5
+fun <- function(){
+  return("I love Stats!")
+}
+fun()
+
+my_vec <- replicate(B,fun())
+my_vec
+```
+
+Here is another example for you to try:
+
+###Lets make a deal
+
+What is better deal?
+
+
+Win $1 if out of 10 flips of fair coin you get exactly 5 heads.
+
+
+Win $1 if out of 100 flips of fair coin you get exactly 50 heads.
+
+We are going to make a simulation of flipping a coin `size=100` number times and seeing if we get exactly 50. We will do this exeriment `B=200` times and compute the percentage of times that it is exactly 50.
+
+
+
+
+```{r norm3, exercise=TRUE, exercise.eval=FALSE}
+
+B=200
+
+fun <- function(size){
+  vec <- sample(c(0,1),size = size,prob=c(.5,.5),replace = TRUE)
+  sum(vec)==(.5)*size
+}
+
+#add replicate command here. Assign the name my_vec to the output of replicate.
+
+
+
+```
+
+
+
+
+```{r norm3-solution}
+
+B=200
+
+fun <- function(size){
+  vec <- sample(c(0,1),size = size,prob=c(.5,.5),replace = TRUE)
+  sum(vec)==(.5)*size
+}
+
+my_vec <- replicate(B, fun(100))
+my_vec
+mean(my_vec)
+
+```
+
+The answer is the expected number of dollars you will win playing the game B=100 times.
+if you put in 10 for size you get bigger number than if you put 100 in for size so you should take the first deal.
+
+
+##Central Limit Theorem
+
+Lets make a box:
+```{r}
+a <- rep(0,each=7)  
+b <- rep(1,each=3)  #box is 30% 1 and 70% 0
+box <- c(a,b)  #this is your box
+box
+mean(box)
+
+```
+
+Lets make a function that draws a sample of size 100 from the box with replacement and takes the sum of your sample.
+
+```{r}
+sample_size <- 100
+fun <- function(){
+  my_sample <- sample(box,size=sample_size,replace=TRUE)
+  sum(my_sample)
+}  
+fun()
+
+
+```
+
+Lets call this function many times and make a histogram of all of the sums.
+
+```{r}
+B=1000
+sum_sample <- replicate(B,fun())
+head(sum_sample, 50)
+df <- data.frame(sum_sample)
+head(df)
+df %>% ggplot(aes(x=sum_sample,y=..density..)) + geom_histogram(bins=10)
+```
+
+
+
+```{r,norm1-setup, exercise = FALSE, exercise.setup = "exper-hist2", exercise.eval = FALSE, message=FALSE}
+library(DataComputing)
+
+```
+
+What happens to the histogram if you make the box more loopside by making it 99% 0 and 1% 1. What happens now if you make `sample_size` large. Experiment...
+
+```{r exper-hist2, exercise=TRUE, exercise.eval=FALSE,message=FALSE}
+library(DataComputing)
+sample_size <- 100    #change this
+a <- rep(0,each=2)   #change this
+b <- rep(1,each=1)   
+box <- c(a,b)
+box
+
+fun <- function(){
+  my_sample <- sample(box,size=sample_size,replace=TRUE)
+  sum(my_sample)
+}  
+B <- 1000
+sum_sample <- replicate(B,fun())
+df <- data.frame(sum_sample)
+df %>% ggplot(aes(x=sum_sample,y=..density..)) + geom_histogram(bins=10)
+```
+
+```{r exper-hist2-hint}
+# if you make the box more loop sided you need a larger sample size to get a normal distribution for the sum
+```
+
+
+
+

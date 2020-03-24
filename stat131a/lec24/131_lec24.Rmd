@@ -1,0 +1,144 @@
+---
+title: "Stat131A lecture 24"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, message=FALSE,echo=TRUE}
+library(DataComputing)
+
+```
+
+
+
+##`sample()` in R
+
+You can simulate playing Nevada Roulette 10 times using the R function `sample()`
+
+```{r}
+vec <- sample(c("b","r","g"),size=10,prob=c(18/28,18/38,2/38),replace=TRUE)
+vec
+```
+
+You count the number of "r" in the sample vector (i.e. the number of red pockets you landed on in 10 games)
+
+```{r}
+vec=="r"   #this is a boolean vector
+sum(vec=="r")
+sum(vec=="r")/length(vec)
+```
+
+```{r,norm11-setup, exercise = FALSE, exercise.setup = "norm", exercise.eval = FALSE, message=FALSE}
+library(DataComputing)
+
+```
+
+Use the function `sample()` to simulate rolling a fair die 60 times. Also compute the fraction of 1 that you get.
+
+```{r norm11, exercise=TRUE, exercise.eval=FALSE}
+
+```
+
+
+
+```{r norm11-solution}
+vec <- sample(c(1,2,3,4,5,6),size=60,prob=c(1/6,1/6,1/6,1/6,1/6,1/6),replace=TRUE)
+vec
+sum(vec==1)/length(vec)
+```
+
+
+##`for()` loop and `data.frame()` in R
+
+Lets find the number of heads in both 10 and 100 coin tosses. Here is a way to do it using a `for()` loop.
+```{r}
+num_heads_vec=c()
+for(size in c(10,100)){
+  vec <- sample(c("head","tail"),size=size,prob=c(1/2,1/2),replace=TRUE)
+  num_heads_vec <- c(num_heads_vec,sum(vec=="head"))
+}
+num_heads_vec
+```
+
+Suppose you have vectors 
+```{r}
+a <- c(1,2,3)
+b <- c("a","b","c")
+```
+You can make a data frame with column variables `a` and `b` using the function `data.frame()`
+```{r}
+data.frame(a,b)
+```
+
+
+
+
+```{r,norm-setup, exercise = FALSE, exercise.setup = "norm", exercise.eval = FALSE, message=FALSE}
+library(DataComputing)
+
+```
+
+Copy the code above into the console and modify it so that you create a data frame with column variables equal to the number of coin tosses and the number of heads you get for different number of coin tosses.
+
+
+```{r norm, exercise=TRUE, exercise.eval=FALSE}
+
+
+```
+
+
+
+```{r norm-solution}
+size_vec=c()
+num_heads_vec=c()
+for(size in c(10,100)){
+  vec <- sample(c("head","tail"),size=size,prob=c(1/2,1/2),replace=TRUE)
+  size_vec=c(size_vec,size)
+  num_heads_vec <- c(num_heads_vec,sum(vec=="head"))
+}
+df <- data.frame(size_vec,num_heads_vec)
+df
+```
+
+
+##Law of Averages
+
+Consider flipping a fair coin a certain number of times. Here is a graph of the percentage of heads that you get. This result is the the Law of Averages.
+
+```{r}
+size_vec=c()
+num_heads_vec=c()
+for (size in c(100, 1000, 10000, 100000, 1000000, 10000000)){
+  vec <- sample(c("head","tail"),size=size,prob=c(1/2,1/2),replace=TRUE)
+  size_vec=c(size_vec,size)
+  num_heads_vec <- c(num_heads_vec,sum(vec=="head"))
+}
+df <- data.frame(log_size=log(size_vec,base=10),num_heads=num_heads_vec, error=num_heads_vec - size_vec*.5, percent_heads= 100*num_heads_vec/size_vec, percent_error=100*(num_heads_vec - size_vec*.5)/size_vec)
+df
+ 
+df %>% ggplot(aes(x=log_size, y=percent_heads)) + geom_line() + geom_hline(yintercept=50, col="red")
+```
+
+
+Law of Averages: The % heads converges to the expected number of heads (i.e. the % chance error goes to zero) as the number of coin tosses goes to infinity.
+
+
+```
+```{r}
+library(mosaicData)
+
+plot_it <- function(flag){
+  if(flag=="yes"){
+    my_plot<- CPS85 %>% ggplot(aes(x=exper,wage)) + geom_point(aes(color=sex, shape=sex))
+    print(my_plot)
+  }
+}
+plot_it("no")
+```
+
+

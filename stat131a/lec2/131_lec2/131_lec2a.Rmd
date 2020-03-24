@@ -1,0 +1,272 @@
+---
+title: "Stat131A lecture 2"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(DataComputing)
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+## Objects in R
+
+Just about everything in R is an object. Some objects have names and some don't. For example `2` and `"Adam"` are objects that don't have names. Here `2` is a numerical constant and `"Adam"` is a string constant.
+
+`mtcars` and `sqrt` are *named* objects.
+
+
+`mtcars` is the name of a dataframe built into R about motorized test cars.
+
+```{r,echo=TRUE}
+mtcars
+```
+
+`sqrt` is the name of the square root function. You need to put parentheses at the end of the function name but the parentheses aren't part of the name.
+
+```{r,echo=TRUE}
+sqrt(4)
+```
+
+
+There are rules for names. 
+
+1. Object names are never in quotes and they never begin with a digit.
+
+2. The name cannot contain any punctuation symbols with two exceptions (you can use . and _). So `sqrt()` isn't a name.
+
+3. The case in the name matters so NCHS and NcHs are different names.
+
+The value of an object gets assigned a name for example `name <- "Adam"`. `<-` is the assignment operator. It works like an equal sign.
+
+###Question for you?
+
+What is the difference between `Adam` and `"Adam"`? Try typing `Adam` into the console box below. What happens and why? Now try typing "Adam" into the console. What happens and why?
+```{r exper-hist8, exercise=TRUE, exercise.eval=FALSE}
+
+```
+
+```{r exper-hist8-hint}
+#  R thinks that Adam is the name of an object and searches for it in the current working environment. If it doesn't find an object value assigned to Adam it will give an error message.
+#"Adam" is a constant and R will just echo it when you type it.
+```
+
+
+What do I get when I type `Adam <- "Adam"` and then `Adam` at the console? Explain.
+```{r exper-hist7, exercise=TRUE, exercise.eval=FALSE}
+
+```
+
+
+
+What is the object name and object value in the commands below below?
+
+```{r,eval=FALSE,echo=TRUE}
+houses <- read.csv("http://www.mosaic-web.org/go/datasets/SaratogaHouses.csv")
+
+```
+
+```{r exper-hist9, exercise=TRUE, exercise.eval=FALSE}
+write your answer here:
+  
+```
+
+```{r exper-hist9-hint}
+# houses is a name and read.csv("http://www.mosaic-web.org/go/datasets/SaratogaHouses.csv") is the value (the entire thing not just the part in quotes)
+```
+
+
+### Legal and illegal names
+
+Some of the assignments made below are to illegal names. Fix them. But do not change any that are legal names.
+
+```{r exper-hist1, exercise=TRUE, exercise.eval=FALSE}
+fred <- "a Flintstone"
+july_2 <- "a date"
+_julie_andrews <- "a singer"
+49ers <- "a football team"
+76_trombones <- "a show tune"
+route_66 <- "a highway"
+Washington DC <- "a city"
+```
+
+```{r exper-hist1-hint}
+#Names shouldn’t start with numbers or punctuation. The only allowed punctuation characters are . and _. Spaces in names are illegal.
+```
+
+
+```{r exper-hist1-solution}
+fred <- "a Flintstone"
+july_2 <- "a date"
+julie_andrews <- "a singer"
+ers <- "a football team"
+trombones <- "a show tune"
+route_66 <- "a highway"
+WashingtonDC <- "a city"
+```
+
+### More illegal names
+
+Many of the object names in the code pane include illegal characters. 
+Remove **only** those **illegal characters** to form proper object names. Other than the illegal character's being removed, the names should remain exactly the same. Don't replace the illegal characters, simply remove them.'
+
+```{r exper-hist2, exercise=TRUE, exercise.eval=FALSE}
+7eleven <- "store"
+seven-eleven <- "convenience store"
+R squared <- 0.25
+p_value <- 0.07
+file name <- "cats.csv"
+"Data set" <- mtcars
+```
+
+```{r exper-hist2-hint}
+#Leading punctuation or numbers are illegal. Within the body of the name, only `_` and `.` are acceptable punctuation.
+```
+
+
+```{r exper-hist2-solution}
+eleven <- "store"
+seveneleven <- "convenience store"
+Rsquared <- 0.25
+p_value <- 0.07
+filename <- "cats.csv"
+Dataset <- mtcars
+```
+
+## R's built in functions
+
+R has built in functions that do useful tasks. The function name must be followed by parentheses. Inside the parenthesis you may have arguements of the function.
+
+You can learn about R's built in function `nrow` by typing `?nrow` in the console below and hitting run.
+
+```{r exper-hist11, exercise=TRUE, exercise.eval=FALSE}
+
+```
+
+As another example of a function lets learn about `read.csv`.
+Here it is used to load a csv file. The function `head` gives the first few lines of the dataframe `houses`.
+
+```{r,echo=TRUE}
+houses <- read.csv("http://www.mosaic-web.org/go/datasets/SaratogaHouses.csv")
+head(houses)
+```
+
+
+Type `?read.csv` in the console below. Near the top of the help file you will see the syntax (i.e. proper usage) of the function `read.csv`. Notice that some arguements are named (use equals instead of assignment operator here) and that arguments are separated by commas.
+
+
+```{r exper-hist10, exercise=TRUE, exercise.eval=FALSE}
+
+```
+
+ 
+### Syntax for functions
+
+Fix the syntax so that the command works.
+
+
+```{r exper-hist, exercise=TRUE, exercise.eval=FALSE}
+ralph <- sqrt 100
+```
+
+```{r exper-hist-hint}
+#The arguments to functions must always be in parentheses.
+```
+
+
+```{r exper-hist-solution}
+ralph <- sqrt(100)
+```
+
+### Functions and arguments
+
+The `paste()` function glues together character strings. The command in the code pane is intended to produce the result `"one and two and three"`.  But it's not yet in a correct form, as you'll see when you run the code.
+
+
+```{r exper-hist4, exercise=TRUE, exercise.eval=FALSE}
+paste("one"; "two"; "three"; sep = " and ")
+```
+
+```{r exper-hist4-hint}
+#`paste()` should have four arguments within the parentheses. What character should separate the arguments?
+```
+
+
+```{r exper-hist4-solution}
+paste("one", "two", "three", sep = " and ")
+```
+
+
+## dataframes in R
+
+Dataframes (also known as data tables) is a powerful way R stores data. 
+
+For example here are the first 6 lines of a dataframe, called `CPS85`, which is data from the 1985 Current Population Survey. `wage` is wages in US dollars per hour, and `exper` is number of years of work experience. These are two of the variables (columns) of the dataframe. The rows are called `cases` and each row is data for a different individual.
+
+
+
+```{r, message=FALSE}
+library(mosaicData) #some libraries we need
+library(dplyr)
+library(ggplot2)
+
+```
+
+```{r, echo=TRUE}
+head(CPS85)    #head() gives the first few lines in a data frame
+```
+
+
+Often we need to *wrangle* our dataframe to get out information. To do this we use chaining syntax.
+
+The general chaining syntax is:
+
+
+```{r,echo=TRUE,eval=FALSE}
+
+#Object_Name <- 
+#Data_Table %>%
+#function_name(arguments) %>%
+#function_name(arguments)
+
+```
+
+For example:
+
+```{r, echo=TRUE}
+top <- 
+  CPS85 %>% 
+  head(3)
+top
+```
+
+This is equivalent to 
+
+```{r, echo=TRUE}
+top <- head(CPS85,3)
+top
+```
+
+
+Using chaining syntax find the number of rows of dataframe `houses`. Assign this number the name `num_houses`.
+
+```{r exper-hist5, exercise=TRUE, exercise.eval=FALSE}
+houses <- read.csv("http://www.mosaic-web.org/go/datasets/SaratogaHouses.csv")
+
+#write your R code here
+```
+
+```{r exper-hist5-hint}
+#The function is nrow(). It takes as its argument the dataframe. 
+```
+
+
+```{r exper-hist5-solution}
+houses <- read.csv("http://www.mosaic-web.org/go/datasets/SaratogaHouses.csv")
+
+num_houses <- 
+  houses %>% 
+  nrow()
+```

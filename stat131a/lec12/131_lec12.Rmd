@@ -1,0 +1,145 @@
+---
+title: "Stat131A lecture 12"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+##Practice with functions problem 1
+
+Recall this is how you tested that a year is a leap year:
+```{r,eval=FALSE}
+year <-  2013
+if((year%%4==0 & year%%100 != 0) | (year%% 400 ==0)  ) leapyear <- TRUE  else leapyear <- FALSE
+leapyear
+```
+
+
+Make a function called `test_year` that inputs a year and outputs whether the year is a leap year. Call the function with the year 2000 to see whether 2000 was a leap year.
+
+
+```{r,cond, exercise = TRUE, exercise.setup = "cond-setup", exercise.eval = FALSE, message=FALSE}
+
+```
+
+```{r  cond-hint, echo = FALSE}
+
+# test_year <- function(year){
+#etc ...
+#}
+# test_year(2000)
+
+```
+
+
+
+```{r cond-solution, echo = FALSE}
+test_year <- function(year){
+  if((year%%4==0 & year%%100 != 0) | (year%% 400 ==0)) {
+    leapyear <- TRUE}
+  else {
+    leapyear <- FALSE}  
+  leapyear
+}
+test_year(2000)
+```
+
+
+```{r,include=TRUE}
+
+```
+
+##Practice with functions problem 2
+
+Recall that this is how we simulated rolling a die until you get a 4 creating a vector of 
+
+```{r,eval=FALSE}
+myrolls <- c()
+roll <- 1000 #some number not 1 through 6
+while(roll != 4){
+  roll <- sample(1:6,1)
+  myrolls <- c(myrolls,roll)
+}
+myrolls
+```
+
+Write a function called `coin_toss` that inputs a positive integer, n, and outputs a random vector of tails and heads (1 and 0) until you get your nth head. Call the function with n=3 and examine the vector output to make sure it makes sense.
+
+
+```{r,loop, exercise = TRUE, exercise.setup = "DC-2017-02-14-08371a-setup", exercise.eval = FALSE}
+
+```
+
+```{r  loop-hint, echo = FALSE}
+#coin_toss <- function(n){
+#  etc...
+#}  
+#coin_toss(3)
+
+```
+
+
+
+```{r loop-solution, echo = FALSE}
+coin_toss <- function(n){
+  mytosses <- c()
+  counter <- 0
+  while(counter<n){
+    toss <- sample(0:1,1)
+    mytosses <- c(mytosses,toss)
+    if(toss==1){
+      counter=counter+1
+    }
+  }
+  mytosses
+}
+coin_toss(3)
+```
+
+
+##Practice with functions problem 3
+
+Write a function that approximates the value of pi by summing the terms of this series:
+4/1-4/3+4/5-4/7+4/9-4/11+ ...  The function has a single input, n, which is the number of terms to sum. It outputs the sum of the first n terms of this series, as well as the difference of the sum and pi. Call the function to estimate pi with 20 terms.
+
+
+
+```{r,loop3, exercise = TRUE, exercise.setup = "DC-2017-02-14-0837a-setup", exercise.eval = FALSE}
+
+```
+
+```{r  loop3-hint, echo = FALSE}
+#use a for loop
+#sum=0
+#for(i in 1:n){
+ #   increment <- (-1)^(i+1) * 4/(2*i-1)
+#    sum=sum + increment
+
+#to return multiple values use a list  (i.e. return(list(sum, pi-sum))
+
+```
+
+
+
+```{r loop3-solution, echo = FALSE}
+my_pi <- function(n){
+  sum=0
+  for(i in 1:n){
+    increment <- (-1)^(i+1) * 4/(2*i-1)
+    sum=sum + increment
+  }
+  return(list(sum, pi-sum))
+}
+my_pi(20)
+```
+
+
+```
+
+
+
